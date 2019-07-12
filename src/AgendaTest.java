@@ -2,10 +2,14 @@ import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.time.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import jbook.util.Input;
 
 public class AgendaTest {
 	
@@ -78,6 +82,44 @@ public class AgendaTest {
 		//ag.eliminaApp(0);
 		//System.out.println("4. test dopo eliminaApp: "+ag.numEl());
 	}
+
+	@Test 
+	public void testCercaPerOra() {
+		Agenda ag = new Agenda();
+		Appuntamento a = new Appuntamento();
+		a.setNome("pippo");
+		a.setOrario(12, 30);
+		a.setDurata(60);
+		ag.inserisciApp(a);
+		
+		assertNotEquals(-1,ag.cercaPerOrarioDisponibile(LocalTime.of(13,30)));
+	}
+	
+	@Test 
+	public void testModificaAppuntamento() {
+		Agenda ag = new Agenda();
+		this.inserisciAppuntamenti(ag);
+		
+		// ora in cui voglio piazzare l'appuntamento 
+		LocalTime nuovoapp = LocalTime.of(15, 10);
+		
+		int trovato = ag.cercaPerOrarioDisponibile(nuovoapp);
+		
+		// se l'orario Ã¨ disponibile
+		if (trovato != -1) {
+	        
+			// recupera l'appuntamento e ne modifica i campi
+			Appuntamento apptrovato = ag.recuperaApp(trovato);
+			apptrovato.setNome("Belardone");
+			apptrovato.setDurata(10);
+			apptrovato.setLuogo("Fratta Todina");
+			apptrovato.setData("2019", "07", "03");
+		}
+		
+		assert(ag.recuperaApp(trovato).getNome() == "Belardone");
+		
+	}
+	
 	
 	@Test
 	public void eliminaPerNome(){
@@ -98,10 +140,12 @@ public class AgendaTest {
 		a.setNome("pippo");
 		ag.inserisciApp(a);
 		//System.out.println("6. test dopo inserisciApp: "+ ag.numEl());
-		ag.dettagliNome("pippo");
-		assertTrue(ag.dettagliNome("pippo"));
+		//ag.dettagliNome("pippo");
+		
+		String n = Input.readString();
+		assertTrue(ag.dettagliNome(n));
 		//System.out.println("6. test dopo recuperaPerNome: "+ ag.numEl());
-		//il test restituisce 1 perchè effettivamente ha trovato il nome
+		//il test restituisce 1 perchï¿½ effettivamente ha trovato il nome
 	}
 	
 	@Test
@@ -127,7 +171,7 @@ public class AgendaTest {
 		//ag.dettagliData(a.getData());
 		assertTrue(ag.dettagliData(a.getData()));
 		//System.out.println("8. test dopo dettagliData: "+ ag.numEl());
-		//il test restituisce 1 perchè effettivamente ha trovato la data
+		//il test restituisce 1 perchï¿½ effettivamente ha trovato la data
 	}
 	
 	@Test

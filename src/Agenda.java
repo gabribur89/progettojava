@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 
 public class Agenda {
 	
@@ -80,7 +82,9 @@ public class Agenda {
 	
 	public int cercaPerNome(String n){
 		for(int i=0;i<agenda.size();i++){
-			if (agenda.get(i).getNome() == n){
+			String nome = agenda.get(i).getNome();
+						
+			if (nome.compareTo(n) == 0){
 				return i; //restituisco indice se ho trovato il nome
 			}
 		}
@@ -106,6 +110,7 @@ public class Agenda {
 	
 	
 	public boolean dettagliNome(String n){
+		
 		int trovato = cercaPerNome(n);
 		
 		if(trovato != -1)
@@ -129,6 +134,22 @@ public class Agenda {
 			}
 		}
 		return -1; //se non l'ho trovata, restituisco -1
+	}
+
+	public int cercaPerOrarioDisponibile(LocalTime ora){
+		
+		for(int i=0;i<agenda.size();i++)
+		{
+			// differenza in minuti da 00:00 + la durata
+			int delta_minuti = agenda.get(i).getOrario().get(ChronoField.MINUTE_OF_DAY) + agenda.get(i).getDurata();
+			// differenza in minuti per l'ora validare
+			int delta_minuti_input = ora.get(ChronoField.MINUTE_OF_DAY);
+			
+			if(delta_minuti <= delta_minuti_input){
+			return i; 
+			}
+		}
+		return -1; 
 	}
 	
 	public boolean dettagliData(LocalDate d){
