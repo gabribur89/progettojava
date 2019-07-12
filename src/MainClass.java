@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+
 import jbook.util.Input;
 import java.util.*;
 
@@ -89,7 +91,14 @@ public class MainClass {
 				case 3: //modifica appuntamento
 					break;
 				case 4: //ricerca di appuntamento per data
-					//agenda.cercaPerData(d);
+					System.out.print("Inserisci la data (PER ORA AAAA-MMM-GG):");
+					String da = Input.readString();
+					String arr[];
+					arr=da.split("-");
+					//LocalDate.parse(da);
+					//System.out.print(da);
+					//a.getData();
+					agenda.cercaPerData(LocalDate.parse(da));
 					break;
 				case 5: //ricerca di appuntamento per nome
 					System.out.print("Inserisci il nome che vuoi cercare:");
