@@ -59,7 +59,7 @@ public class Appuntamento {
 	}
 	
 	public void stampaApp(){
-		System.out.println("-----STAMPA APPUNTAMENTO-----");
+		System.out.println("----------");
 		System.out.println("data: "+getData());
 		System.out.println("ora: "+getOrario());
 		System.out.println("durata: "+getDurata());

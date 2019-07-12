@@ -139,13 +139,7 @@ public class AgendaTest {
 		Appuntamento a = new Appuntamento();
 		a.setNome("pippo");
 		ag.inserisciApp(a);
-		//System.out.println("6. test dopo inserisciApp: "+ ag.numEl());
-		//ag.dettagliNome("pippo");
-		
-		String n = Input.readString();
-		assertTrue(ag.dettagliNome(n));
-		//System.out.println("6. test dopo recuperaPerNome: "+ ag.numEl());
-		//il test restituisce 1 perch� effettivamente ha trovato il nome
+		assertTrue(ag.dettagliNome("pippo"));
 	}
 	
 	@Test

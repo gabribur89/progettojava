@@ -1,4 +1,8 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import jbook.util.Input;
 import java.util.*;
 
@@ -81,12 +85,34 @@ public class MainClass {
 				switch(scelta){
 				case 1: //aggiungi appuntamento
 					Appuntamento appu = nuovoApp();
-					agenda.inserisciApp(appu);
+					// controllo che non esista un altro appuntemento nella stessa data e ora
+					LocalTime ora = appu.getOrario();
+					LocalDate data = appu.getData();
+					
+					// il giorno è disponibile non mi faccio problemi
+					if( agenda.cercaPerData(data) == -1){
+						agenda.inserisciApp(appu);
+					// il giorno non è disponibile ma l'orario lo è		
+					}else if(agenda.cercaPerOrarioDisponibile(ora) != -1){
+						agenda.inserisciApp(appu);
+					}else {
+						System.out.print("Non è possibile inserire l'appuntamento in questa data\n");
+					}
+					
 					break;
 				case 2: //elimino tutti i dati
 					//agenda.eliminaApp();
 					break;
 				case 3: //modifica appuntamento
+					agenda.stampaAgenda();
+					System.out.print("Schegli l'appuntamento da moficare:");
+					int numeroapp = Input.readInt();
+					
+					Appuntamento nuovo = nuovoApp();
+					// la funzione richiede un indice dell'arraylist
+					agenda.sostituisciApp(numeroapp-1, nuovo);
+					agenda.stampaAgenda();
+
 					break;
 				case 4: //ricerca di appuntamento per data
 					//agenda.cercaPerData(d);
@@ -113,15 +139,28 @@ public class MainClass {
 					break;
 				case 8: //ordinamento per data
 					agenda.ordina();
+					agenda.stampaAgenda();
 					break;
 				case 9: //stampa tutti gli appuntamenti correnti
 					agenda.stampaAgenda();
 					break;
 				case 10: //scrivi su file
-					agenda.scrivisufile();
+					try {
+						agenda.scrivisufile();
+					}catch (Exception e) {
+						System.out.println("Errore nel salvataggio degli Appuntamenti su file");
+					}
+					System.out.println("Appuntamenti Salvati correttamente");
+					
 					break;
 				case 11: //leggi da file
-					agenda.leggidafile();
+					try {
+						agenda.leggidafile();
+					}catch (Exception e) {
+						System.out.println("Errore nella lettura dei dati da file");
+					}
+					System.out.println("Appuntamenti caricati correttamente");
+					
 					break;
 				case 0: //esci
 					System.out.println("\n ti saluto! Alla prossima! ");

@@ -20,7 +20,6 @@ public class Agenda {
 		
 	}
 	
-	
 	public void leggidafile() throws FileNotFoundException, IOException, NumeroCampiException {
 		try(BufferedReader br = new BufferedReader(new FileReader("leggimi.csv"))) {
 		    //StringBuilder sb = new StringBuilder();
@@ -94,6 +93,19 @@ public class Agenda {
 	public Appuntamento eliminaApp(int i){
 		return agenda.remove(i);
 	}
+
+	public Boolean sostituisciApp(int i, Appuntamento nuovo){
+		
+		try {
+			agenda.remove(i);
+			agenda.add(i, nuovo);
+		} catch (Exception e) {
+			System.out.print("Errore durante la modifica");
+			return false;
+		}
+		
+		return true;
+	}
 	
 	public boolean eliminaPerNome(String n){
 		int trovato = cercaPerNome(n);
@@ -129,8 +141,9 @@ public class Agenda {
 		
 		for(int i=0;i<agenda.size();i++)
 		{
-			if(agenda.get(i).getData() == d){
-			return i; //restituisco indice se ho trovato la data
+			LocalDate data = agenda.get(i).getData();
+			if(data.isEqual(d)){
+				return i; //restituisco indice se ho trovato la data
 			}
 		}
 		return -1; //se non l'ho trovata, restituisco -1
@@ -212,8 +225,11 @@ public class Agenda {
    public void stampaAgenda(){
 	   System.out.println("STAMPA AGENDA");
 	   Iterator<Appuntamento> iter = agenda.iterator(); //metodo restituente iteratore per uso cicli
+	   int numeratore = 1;
 	   while (iter.hasNext()){
+		   System.out.print("Appuntamento numero: "+ numeratore + "\n");
 		   iter.next().stampaApp();
+		   numeratore++;
 	   }
    }
 	
