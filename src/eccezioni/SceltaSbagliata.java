@@ -2,10 +2,14 @@ package eccezioni;
 
 public class SceltaSbagliata extends Exception {
 
-	public SceltaSbagliata()
+	public SceltaSbagliata(String msg, Throwable e)
 	{
-		super("Sono ammessi solo i valori scritti nel menù!");
+		super(msg,e);
+	}
 	
-	} 
+	public SceltaSbagliata(String msg)
+	{
+		super(msg);
+	}
 	
 }

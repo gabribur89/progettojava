@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import jbook.util.Input;
+import eccezioni.InputError;
 import eccezioni.NumeroCampiException;
 import eccezioni.SceltaSbagliata;
 
@@ -36,7 +37,7 @@ public class MainClass {
 		System.out.println("\n\n\n");
 	}
 	
-	public static Appuntamento nuovoApp() throws SceltaSbagliata{
+	public static Appuntamento nuovoApp() throws SceltaSbagliata, InputError{
 
 		Appuntamento app = new Appuntamento();
 		
@@ -64,16 +65,16 @@ public class MainClass {
 
 		}
 		catch (DateTimeParseException e) {
-			System.out.print("Data non valida");
+			throw new InputError("Data non valida",e);
 		}
 		catch (ArrayIndexOutOfBoundsException e) {
-			System.out.print("Formato Data oppure Ora invalido, data: AAAA-MM-GG , ora: HH:MM");
+			throw new InputError("Formato Data oppure Ora invalido, data: AAAA-MM-GG , ora: HH:MM",e);
 		}
 		catch(NumberFormatException e){
-			System.out.print("Accetto solo numeri, non altri caratteri!");
+			throw new InputError("Accetto solo numeri, non altri caratteri!",e);
 		}
 		catch (DateTimeException e){
-			throw new SceltaSbagliata();
+			throw new InputError("Data, ora o minuti sbagliati",e);
 			//System.out.println("Data, ora o minuti sbagliati.");
 		}
 		
@@ -81,9 +82,9 @@ public class MainClass {
 
 	}
 	
-	public static void main(String[] args) throws SceltaSbagliata{
+	public static void main(String[] args) throws SceltaSbagliata, InputError{
 			
-			int scelta;
+			int scelta = 0;
 			// determina se è già stato prodotto il menu o no
 			Boolean esistente = false;
 			Agenda agenda = new Agenda();
@@ -107,7 +108,22 @@ public class MainClass {
 			do{
 				MainClass.stampaMenu(esistente);
 				esistente = true; 
-				scelta=Input.readInt();
+				
+				try { 
+					scelta=Input.readInt();
+					System.out.println(scelta);
+					if((scelta<0) || (scelta>9))
+					{
+						throw new SceltaSbagliata("Devi inserire un numero tra 0 e 9!");
+					}
+					
+				} catch (NumberFormatException e){
+						System.out.print("Devi inserire solo numeri interi!");
+				  }
+				  catch(SceltaSbagliata e){
+					  scelta = 99;
+					  System.out.println("Devi inserire un numero tra 0 e 9!");
+				  };
 				
 				switch(scelta){
 				case 1: //aggiungi appuntamento
@@ -126,7 +142,7 @@ public class MainClass {
 						}else {
 							System.out.print("Non � possibile inserire l'appuntamento in questa data\n");
 						}
-					}catch(SceltaSbagliata e){
+					}catch(InputError e){
 						System.out.println(e.getMessage());
 						break;
 						//System.out.println("Errore nell'inserimento di appuntamento");
