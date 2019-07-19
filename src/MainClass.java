@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -13,52 +14,80 @@ import eccezioni.SceltaSbagliata;
  * @author Buratto Gabriele 10025213
 */
 public class MainClass {
+
+	public static void stampaMenu(Boolean giaesistente) {
+		if (giaesistente) {
+			System.out.println("\n\n Premi un tasto per tornare al menu");
+			Input.readString();
+		}
+		System.out.println("\n\n GESTIONE RUBRICA DI APPUNTAMENTI");
+		System.out.println("\n\n");
+		System.out.println("1 - Aggiungi un appuntamento");
+		System.out.println("2 - Modifica un appuntamento");
+		System.out.println("3 - Cerca un appuntamento per data");
+		System.out.println("4 - Cerca appuntamento per nome");
+		System.out.println("5 - Elimina appuntamento per nome");
+		System.out.println("6 - Ordina appuntamenti per data");
+		System.out.println("7 - Stampa tutti gli appuntamenti");
+		System.out.println("8 - Scrivi appuntamento su file");
+		System.out.println("9 - Leggi appuntamenti da file");
+		System.out.println("0 - Esci ");
+		System.out.println("\nInserisci un comando: ");
+		System.out.println("\n\n\n");
+	}
 	
-	public static Appuntamento nuovoApp() throws DateTimeParseException{
+	public static Appuntamento nuovoApp() throws SceltaSbagliata{
+
+		Appuntamento app = new Appuntamento();
 		
-			Appuntamento app = new Appuntamento();
+		try {
 		
 			System.out.print("Inserisci il nome della persona:");
-			String n = Input.readString();
+			app.setNome(Input.readString());
 			
-			System.out.print("Inserisci la data AAAA-MMM-GG:");
+			System.out.print("Inserisci la data (PER ORA AAAA-MM-GG):");
 			String da = Input.readString();
-			String arr[];
-			arr=da.split("-");
+			String arr[] = da.split("-");
+			app.setData(arr[0], arr[1], arr[2]);
 			
-			System.out.print("Inserisci la durata (minuti):");
-			int du = Input.readInt();
+			System.out.print("Inserisci la durata (in minuti):");
+			app.setDurata(Input.readInt());
 			
 			System.out.print("Inserisci luogo:");
-			String l = Input.readString();
+			app.setLuogo(Input.readString());
 			
-			System.out.print("Inserisci orario (hh:mm):");
+			System.out.print("Inserisci orario:");
 			String o = Input.readString();
 			String arr2[];
 			arr2=o.split(":");
-			
-			//try{
-			app.setNome(n);
-			app.setData(arr[0], arr[1], arr[2]);
-			app.setDurata(du);
-			app.setLuogo(l);
 			app.setOrario(Integer.parseInt(arr2[0]), Integer.parseInt(arr2[1]));
-			//return app;
-			/*catch (DateTimeParseException e){
-					System.out.println("Guarda che il formato della data non Ë corretto!");
-			}
-			catch (NumberFormatException e){
-				System.out.print("Devi inserire solo numeri interi!");
-			};*/
-		return app;
+
+		}
+		catch (DateTimeParseException e) {
+			System.out.print("Data non valida");
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			System.out.print("Formato Data oppure Ora invalido, data: AAAA-MM-GG , ora: HH:MM");
+		}
+		catch(NumberFormatException e){
+			System.out.print("Accetto solo numeri, non altri caratteri!");
+		}
+		catch (DateTimeException e){
+			throw new SceltaSbagliata();
+			//System.out.println("Data, ora o minuti sbagliati.");
+		}
+		
+	return app;
+
 	}
 	
-	public static void main(String[] args) throws IOException, NumeroCampiException, SceltaSbagliata {
+	public static void main(String[] args) throws SceltaSbagliata{
 			
-			int scelta = 10 ;
-			
-			Agenda agenda=new Agenda();
-			
+			int scelta;
+			// determina se √® gi√† stato prodotto il menu o no
+			Boolean esistente = false;
+			Agenda agenda = new Agenda();
+			/*
 			Appuntamento a = new Appuntamento();
 			a.setNome("pippo");
 			a.setData("1999", "02", "01");
@@ -74,55 +103,33 @@ public class MainClass {
 			
 			agenda.inserisciApp(a);
 			agenda.inserisciApp(b);
-			
+			*/
 			do{
-				System.out.println("GESTIONE RUBRICA DI APPUNTAMENTI");
-				System.out.println("\n\n");
-				System.out.println("1 - Aggiungi un appuntamento");
-				System.out.println("2 - Modifica un appuntamento");
-				System.out.println("3 - Cerca un appuntamento per data");
-				System.out.println("4 - Cerca appuntamento per nome");
-				System.out.println("5 - Elimina appuntamento per nome");
-				System.out.println("6 - Ordina appuntamenti per data");
-				System.out.println("7 - Stampa tutti gli appuntamenti");
-				System.out.println("8 - Scrivi appuntamento su file");
-				System.out.println("9 - Leggi appuntamenti da file");
-				System.out.println("0 - Esci ");
-				System.out.println("\n\n");
-				System.out.print("\n Inserisci un comando: ");
-				
-				try { 
-					scelta=Input.readInt();
-					System.out.println(scelta);
-					if((scelta<0) || (scelta>9))
-					{
-						System.out.print("dsdasdsasad");
-						throw new SceltaSbagliata();
-					}
-				} catch (NumberFormatException e){
-						System.out.print("Devi inserire solo numeri interi!");
-				  }
-				  catch(SceltaSbagliata ex){
-					  System.out.print("sssss!");
-				  };
-					
-				System.out.println("\n\n\n");
+				MainClass.stampaMenu(esistente);
+				esistente = true; 
+				scelta=Input.readInt();
 				
 				switch(scelta){
 				case 1: //aggiungi appuntamento
-					Appuntamento appu = nuovoApp();
-					// controllo che non esista un altro appuntemento nella stessa data e ora
-					LocalTime ora = appu.getOrario();
-					LocalDate data = appu.getData();
-					
-					// il giorno Ë disponibile non mi faccio problemi
-					if( agenda.cercaPerData(data) == -1){
-						agenda.inserisciApp(appu);
-					// il giorno non Ë disponibile ma l'orario lo Ë		
-					}else if(agenda.cercaPerOrarioDisponibile(ora) != -1){
-						agenda.inserisciApp(appu);
-					}else {
-						System.out.print("Non Ë possibile inserire l'appuntamento in questa data\n");
+					try{
+						Appuntamento appu = nuovoApp();
+						// controllo che non esista un altro appuntemento nella stessa data e ora
+						LocalTime ora = appu.getOrario();
+						LocalDate data = appu.getData();
+						
+						// il giorno Ë disponibile non mi faccio problemi
+						if( agenda.cercaPerData(data) == -1){
+							agenda.inserisciApp(appu);
+						// il giorno non Ë disponibile ma l'orario lo Ë		
+						}else if(agenda.cercaPerOrarioDisponibile(ora) != -1){
+							agenda.inserisciApp(appu);
+						}else {
+							System.out.print("Non Ë possibile inserire l'appuntamento in questa data\n");
+						}
+					}catch(SceltaSbagliata e){
+						System.out.println(e.getMessage());
+						break;
+						//System.out.println("Errore nell'inserimento di appuntamento");
 					}
 				 
 					break;
@@ -138,8 +145,9 @@ public class MainClass {
 					}catch (NumberFormatException e){
 						System.out.println("Devi inserire solo numeri interi!");
 				     };
-					break;
-				case 3: //ricerca di appuntamento per data
+
+				     break;
+				case 3: //ricerca appuntamento per data
 					try{
 						System.out.print("Inserisci la data (AAAA-MMM-GG):");
 						String da = Input.readString();
