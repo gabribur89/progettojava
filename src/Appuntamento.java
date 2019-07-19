@@ -7,7 +7,7 @@ import java.util.Date;
 import java.time.*;
 import java.time.LocalDate;
 
-public class Appuntamento {
+public class Appuntamento implements Evento{
 	private LocalDate data;
 	private LocalTime orario;
 	private int durata;
@@ -56,15 +56,6 @@ public class Appuntamento {
 	
 	public String getLuogo(){
 		return luogo;
-	}
-	
-	public void stampaApp(){
-		System.out.println("----------");
-		System.out.println("data: "+getData());
-		System.out.println("ora: "+getOrario());
-		System.out.println("durata: "+getDurata());
-		System.out.println("nome: "+getNome());
-		System.out.println("luogo: "+getLuogo());
 	}
 	
 }
