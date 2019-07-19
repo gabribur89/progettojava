@@ -1,47 +1,61 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.time.format.DateTimeParseException;
 import jbook.util.Input;
-import java.util.*;
+import eccezioni.NumeroCampiException;
+import eccezioni.SceltaSbagliata;
 
+
+/**
+ * …………
+ *
+ * @author Buratto Gabriele 10025213
+*/
 public class MainClass {
 	
-	public static Appuntamento nuovoApp(){
+	public static Appuntamento nuovoApp() throws DateTimeParseException{
 		
-		System.out.print("Inserisci il nome della persona:");
-		String n = Input.readString();
+			Appuntamento app = new Appuntamento();
 		
-		System.out.print("Inserisci la data (PER ORA AAAA-MMM-GG):");
-		String da = Input.readString();
-		String arr[];
-		arr=da.split("-");
-		
-		System.out.print("Inserisci la durata (in minuti):");
-		int du = Input.readInt();
-		
-		System.out.print("Inserisci luogo:");
-		String l = Input.readString();
-		
-		System.out.print("Inserisci orario:");
-		String o = Input.readString();
-		String arr2[];
-		arr2=o.split(":");
-		
-		
-		Appuntamento app = new Appuntamento();
-		app.setNome(n);
-		app.setData(arr[0], arr[1], arr[2]);
-		app.setDurata(du);
-		app.setLuogo(l);
-		app.setOrario(Integer.parseInt(arr2[0]), Integer.parseInt(arr2[1]));
+			System.out.print("Inserisci il nome della persona:");
+			String n = Input.readString();
+			
+			System.out.print("Inserisci la data AAAA-MMM-GG:");
+			String da = Input.readString();
+			String arr[];
+			arr=da.split("-");
+			
+			System.out.print("Inserisci la durata (minuti):");
+			int du = Input.readInt();
+			
+			System.out.print("Inserisci luogo:");
+			String l = Input.readString();
+			
+			System.out.print("Inserisci orario (hh:mm):");
+			String o = Input.readString();
+			String arr2[];
+			arr2=o.split(":");
+			
+			//try{
+			app.setNome(n);
+			app.setData(arr[0], arr[1], arr[2]);
+			app.setDurata(du);
+			app.setLuogo(l);
+			app.setOrario(Integer.parseInt(arr2[0]), Integer.parseInt(arr2[1]));
+			//return app;
+			/*catch (DateTimeParseException e){
+					System.out.println("Guarda che il formato della data non è corretto!");
+			}
+			catch (NumberFormatException e){
+				System.out.print("Devi inserire solo numeri interi!");
+			};*/
 		return app;
 	}
 	
-	public static void main(String[] args) throws IOException, NumeroCampiException  {
+	public static void main(String[] args) throws IOException, NumeroCampiException, SceltaSbagliata {
 			
-			int scelta;
+			int scelta = 10 ;
 			
 			Agenda agenda=new Agenda();
 			
@@ -51,7 +65,6 @@ public class MainClass {
 			a.setDurata(45);
 			a.setLuogo("milano");
 			a.setOrario(13, 30);
-			
 			Appuntamento b = new Appuntamento();
 			b.setNome("caio");
 			b.setData("1990", "12", "22");
@@ -66,20 +79,33 @@ public class MainClass {
 				System.out.println("GESTIONE RUBRICA DI APPUNTAMENTI");
 				System.out.println("\n\n");
 				System.out.println("1 - Aggiungi un appuntamento");
-				System.out.println("2 - Elimina un appuntamento (tutti i dati)");
-				System.out.println("3 - Modifica un appuntamento");
-				System.out.println("4 - Cerca un appuntamento per data");
-				System.out.println("5 - Cerca appuntamento per nome");
-				System.out.println("6 - Elimina un appuntamento per data");
-				System.out.println("7 - Elimina appuntamento per nome");
-				System.out.println("8 - Ordina appuntamenti per data");
-				System.out.println("9 - Stampa tutti gli appuntamenti");
-				System.out.println("10 - Scrivi appuntamento su file");
-				System.out.println("11 - Leggi appuntamenti da file");
+				System.out.println("2 - Modifica un appuntamento");
+				System.out.println("3 - Cerca un appuntamento per data");
+				System.out.println("4 - Cerca appuntamento per nome");
+				System.out.println("5 - Elimina appuntamento per nome");
+				System.out.println("6 - Ordina appuntamenti per data");
+				System.out.println("7 - Stampa tutti gli appuntamenti");
+				System.out.println("8 - Scrivi appuntamento su file");
+				System.out.println("9 - Leggi appuntamenti da file");
 				System.out.println("0 - Esci ");
 				System.out.println("\n\n");
 				System.out.print("\n Inserisci un comando: ");
-				scelta=Input.readInt();
+				
+				try { 
+					scelta=Input.readInt();
+					System.out.println(scelta);
+					if((scelta<0) || (scelta>9))
+					{
+						System.out.print("dsdasdsasad");
+						throw new SceltaSbagliata();
+					}
+				} catch (NumberFormatException e){
+						System.out.print("Devi inserire solo numeri interi!");
+				  }
+				  catch(SceltaSbagliata ex){
+					  System.out.print("sssss!");
+				  };
+					
 				System.out.println("\n\n\n");
 				
 				switch(scelta){
@@ -89,42 +115,44 @@ public class MainClass {
 					LocalTime ora = appu.getOrario();
 					LocalDate data = appu.getData();
 					
-					// il giorno Ã¨ disponibile non mi faccio problemi
+					// il giorno è disponibile non mi faccio problemi
 					if( agenda.cercaPerData(data) == -1){
 						agenda.inserisciApp(appu);
-					// il giorno non Ã¨ disponibile ma l'orario lo Ã¨		
+					// il giorno non è disponibile ma l'orario lo è		
 					}else if(agenda.cercaPerOrarioDisponibile(ora) != -1){
 						agenda.inserisciApp(appu);
 					}else {
-						System.out.print("Non Ã¨ possibile inserire l'appuntamento in questa data\n");
+						System.out.print("Non è possibile inserire l'appuntamento in questa data\n");
 					}
-					
+				 
 					break;
-				case 2: //elimino tutti i dati
-					//agenda.eliminaApp();
+				case 2: //modifica appuntamento
+					try{
+						agenda.stampaAgenda();
+						System.out.print("Scegli l'appuntamento da modificare:");
+						int numeroapp = Input.readInt();
+						Appuntamento nuovo = nuovoApp();
+						// la funzione richiede un indice dell'arraylist
+						agenda.sostituisciApp(numeroapp-1, nuovo);
+						agenda.stampaAgenda();
+					}catch (NumberFormatException e){
+						System.out.println("Devi inserire solo numeri interi!");
+				     };
 					break;
-				case 3: //modifica appuntamento
-					agenda.stampaAgenda();
-					System.out.print("Schegli l'appuntamento da moficare:");
-					int numeroapp = Input.readInt();
-					
-					Appuntamento nuovo = nuovoApp();
-					// la funzione richiede un indice dell'arraylist
-					agenda.sostituisciApp(numeroapp-1, nuovo);
-					agenda.stampaAgenda();
-
+				case 3: //ricerca di appuntamento per data
+					try{
+						System.out.print("Inserisci la data (AAAA-MMM-GG):");
+						String da = Input.readString();
+						agenda.cercaPerData(LocalDate.parse(da));
+						if(!agenda.dettagliData(LocalDate.parse(da)))
+						{
+							System.out.println("Non ho trovato niente");
+						}
+					}catch (DateTimeParseException e){
+						System.out.println("Guarda che il formato della data non è corretto!");
+					};
 					break;
-				case 4: //ricerca di appuntamento per data
-					System.out.print("Inserisci la data (PER ORA AAAA-MMM-GG):");
-					String da = Input.readString();
-					String arr[];
-					arr=da.split("-");
-					//LocalDate.parse(da);
-					//System.out.print(da);
-					//a.getData();
-					agenda.cercaPerData(LocalDate.parse(da));
-					break;
-				case 5: //ricerca di appuntamento per nome
+				case 4: //ricerca di appuntamento per nome
 					System.out.print("Inserisci il nome che vuoi cercare:");
 					String n = Input.readString();
 					//System.out.println(n);
@@ -133,25 +161,22 @@ public class MainClass {
 						System.out.println("Non ho trovato niente");
 					}
 					break;	
-				case 6: //elimina un appuntamento per data
-					System.out.print("");
-					break;
-				case 7: //elimina un appuntamento per nome
+				case 5: //elimina un appuntamento per nome
 					System.out.print("Inserisci il nome per eliminare l'appuntamento:");
 					String n1 = Input.readString();
 					if(!agenda.eliminaPerNome(n1))
 					{
-						System.out.println("Nada de nada");
+						System.out.println("Non ho trovato niente che corrisponda.");
 					}
 					break;
-				case 8: //ordinamento per data
+				case 6: //ordinamento per data
 					agenda.ordina();
 					agenda.stampaAgenda();
 					break;
-				case 9: //stampa tutti gli appuntamenti correnti
+				case 7: //stampa tutti gli appuntamenti correnti
 					agenda.stampaAgenda();
 					break;
-				case 10: //scrivi su file
+				case 8: //scrivi su file
 					try {
 						agenda.scrivisufile();
 					}catch (Exception e) {
@@ -160,7 +185,7 @@ public class MainClass {
 					System.out.println("Appuntamenti Salvati correttamente");
 					
 					break;
-				case 11: //leggi da file
+				case 9: //leggi da file
 					try {
 						agenda.leggidafile();
 					}catch (Exception e) {
