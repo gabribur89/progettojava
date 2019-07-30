@@ -19,12 +19,12 @@ public interface Evento {
 	public String getLuogo();
 	
 	default void stampa() {
-		System.out.println("----------");
-		System.out.println("data: "+getData());
-		System.out.println("ora: "+getOrario());
-		System.out.println("durata: "+getDurata());
-		System.out.println("nome: "+getNome());
-		System.out.println("luogo: "+getLuogo());
+			System.out.println("-----------------");
+			System.out.println("nome: "+getNome());
+			System.out.println("data: "+getData());
+			System.out.println("durata: "+getDurata());
+			System.out.println("orario: "+getOrario());
+			System.out.println("luogo: "+getLuogo());
 	}
 
 }

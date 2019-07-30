@@ -59,13 +59,4 @@ public class Appuntamento implements Evento{
 		return luogo;
 	}
 	
-	public void stampaApp(){
-		System.out.println("STAMPA APPUNTAMENTI");
-		System.out.println("nome: "+getNome());
-		System.out.println("data: "+getData());
-		System.out.println("durata: "+getDurata());
-		System.out.println("orario: "+getOrario());
-		System.out.println("luogo: "+getLuogo());
-	}
-	
 }

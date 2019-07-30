@@ -145,7 +145,6 @@ public class MainClass {
 						break;
 						//System.out.println("Errore nell'inserimento di appuntamento");
 					}
-				 
 					break;
 				case 2: //modifica appuntamento
 					try{
@@ -158,8 +157,10 @@ public class MainClass {
 						agenda.stampaAgenda();
 					}catch (NumberFormatException e){
 						System.out.println("Devi inserire solo numeri interi!");
-				     };
-
+				     }
+					 catch(InputError e){
+						 throw new InputError("Errore nella modifica dell'appuntamento",e);
+					 }
 				     break;
 				case 3: //ricerca appuntamento per data
 					try{
@@ -172,7 +173,7 @@ public class MainClass {
 						}
 					}catch (DateTimeParseException e){
 						System.out.println("Guarda che il formato della data non è corretto!");
-					};
+					}
 					break;
 				case 4: //ricerca di appuntamento per nome
 					System.out.print("Inserisci il nome che vuoi cercare:");
@@ -210,7 +211,10 @@ public class MainClass {
 				case 9: //leggi da file
 					try {
 						agenda.leggidafile();
-					}catch (Exception e) {
+					}catch(InputError e){
+						System.out.println("Non ho trovato il file....");
+					}
+					catch (Exception e) {
 						System.out.println("Errore nella lettura dei dati da file");
 					}
 					System.out.println("Appuntamenti caricati correttamente");
