@@ -1,11 +1,9 @@
-import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import jbook.util.Input;
 import eccezioni.InputError;
-import eccezioni.NumeroCampiException;
 import eccezioni.SceltaSbagliata;
 
 
@@ -16,7 +14,7 @@ import eccezioni.SceltaSbagliata;
 */
 public class MainClass {
 
-	public static void stampaMenu(Boolean giaesistente) {
+	public static void stampaMenu(boolean giaesistente) {
 		if (giaesistente) {
 			System.out.println("\n\n Premi un tasto per tornare al menu");
 			Input.readString();
@@ -86,7 +84,7 @@ public class MainClass {
 			
 			int scelta = 0;
 			// determina se è già stato prodotto il menu o no
-			Boolean esistente = false;
+			boolean esistente = false;
 			Agenda agenda = new Agenda();
 			/*
 			Appuntamento a = new Appuntamento();

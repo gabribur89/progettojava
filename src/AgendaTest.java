@@ -3,13 +3,7 @@ import static org.junit.Assert.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.time.*;
-
-import org.junit.Before;
 import org.junit.Test;
-
-import jbook.util.Input;
 
 public class AgendaTest {
 	

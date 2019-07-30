@@ -94,7 +94,7 @@ public class Agenda {
 		return agenda.remove(i);
 	}
 
-	public Boolean sostituisciApp(int i, Appuntamento nuovo){
+	public boolean sostituisciApp(int i, Appuntamento nuovo){
 		
 		try {
 			agenda.remove(i);
@@ -130,7 +130,7 @@ public class Agenda {
 			Appuntamento a = recuperaApp(trovato);
 			if(a != null)
 			{
-				a.stampa();
+				a.stampaApp();
 				return true;
 			}
 		}
@@ -173,7 +173,7 @@ public class Agenda {
 			Appuntamento a = recuperaApp(trovato);
 			if(a != null)
 			{
-				a.stampa();
+				a.stampaApp();
 				return true;
 			}
 		}
@@ -228,7 +228,7 @@ public class Agenda {
 	   int numeratore = 1;
 	   while (iter.hasNext()){
 		   System.out.print("Appuntamento numero: "+ numeratore + "\n");
-		   iter.next().stampa();
+		   iter.next().stampaApp();
 		   numeratore++;
 	   }
    }

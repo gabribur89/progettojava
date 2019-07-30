@@ -40,7 +40,7 @@ public class AppuntamentoTest {
 		app.setLuogo("alessandria");
 		app.setNome("pippo");
 		app.setOrario(10, 20);
-		app.stampa();
+		app.stampaApp();
 	}
 	
 	/*
