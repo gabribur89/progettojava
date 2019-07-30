@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.time.LocalTime;
 import org.junit.Test;
 
+import eccezioni.InputError;
+
 public class AgendaTest {
 	
 	public void inserisciAppuntamenti(Agenda ag){
@@ -78,7 +80,7 @@ public class AgendaTest {
 	}
 
 	@Test 
-	public void testCercaPerOra() {
+	public void testCercaPerOra() throws InputError {
 		Agenda ag = new Agenda();
 		Appuntamento a = new Appuntamento();
 		a.setNome("pippo");
@@ -90,7 +92,7 @@ public class AgendaTest {
 	}
 	
 	@Test 
-	public void testModificaAppuntamento() {
+	public void testModificaAppuntamento() throws InputError {
 		Agenda ag = new Agenda();
 		this.inserisciAppuntamenti(ag);
 		
@@ -137,7 +139,7 @@ public class AgendaTest {
 	}
 	
 	@Test
-	public void recuperaData(){
+	public void recuperaData() throws InputError{
 		Agenda ag = new Agenda();
 		Appuntamento a = new Appuntamento();
 		a.setData("2018", "02", "01");
@@ -150,7 +152,7 @@ public class AgendaTest {
 	}
 	
 	@Test
-	public void dettaglioData(){
+	public void dettaglioData() throws InputError{
 		Agenda ag = new Agenda();
 		Appuntamento a = new Appuntamento();
 		a.setData("1999","05","15");
@@ -179,7 +181,7 @@ public class AgendaTest {
 	}
 	
 	@Test
-	public void testleggifile() throws FileNotFoundException, IOException, NumeroCampiException{
+	public void testleggifile() throws FileNotFoundException, IOException, NumeroCampiException, InputError{
 		Agenda ag = new Agenda();
 		ag.leggidafile();
 		assertTrue(ag.numEl()==2);

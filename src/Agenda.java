@@ -8,8 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 
 public class Agenda {
@@ -23,8 +25,10 @@ public class Agenda {
 		
 	}
 	
-	public void leggidafile() throws FileNotFoundException, IOException, NumeroCampiException {
-		try(BufferedReader br = new BufferedReader(new FileReader("leggimi.csv"))) {
+	public void leggidafile() throws FileNotFoundException, IOException, NumeroCampiException, InputError {
+		try {
+		
+			BufferedReader br = new BufferedReader(new FileReader("leggimi.csv")); 
 		    //StringBuilder sb = new StringBuilder();
 		    String line = br.readLine();
 
@@ -54,6 +58,9 @@ public class Agenda {
 		    }
 		    br.close();
 		    //String everything = sb.toString();
+		}catch(FileNotFoundException e)
+		{
+			throw new InputError("Leggi da file InputError",e);
 		}
 	}
 	
@@ -73,7 +80,7 @@ public class Agenda {
 	    	   }
 	           fw.close();
 	       } catch (IOException ex) {
-	           System.err.println("Couldn't log this: ");
+	           System.err.println("Non posso salvarlo, mi dispiace");
 	       }
 		
 	}
@@ -139,44 +146,49 @@ public class Agenda {
 			Appuntamento a = recuperaApp(trovato);
 			if(a != null)
 			{
-				a.stampaApp();
+				a.stampa();
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public int cercaPerData(LocalDate d){
-		
-		assert d != null;
-		
-		for(int i=0;i<agenda.size();i++)
-		{
-			LocalDate data = agenda.get(i).getData();
-			if(data.isEqual(d)){
-				return i; //restituisco indice se ho trovato la data
-			}
-		}
-		return -1; //se non l'ho trovata, restituisco -1
-	}
-
-	public int cercaPerOrarioDisponibile(LocalTime ora){
-		
-		for(int i=0;i<agenda.size();i++)
-		{
-			// differenza in minuti da 00:00 + la durata
-			int delta_minuti = agenda.get(i).getOrario().get(ChronoField.MINUTE_OF_DAY) + agenda.get(i).getDurata();
-			// differenza in minuti per l'ora validare
-			int delta_minuti_input = ora.get(ChronoField.MINUTE_OF_DAY);
-			
-			if(delta_minuti <= delta_minuti_input){
-			return i; 
-			}
-		}
-		return -1; 
-	}
+	public int cercaPerData(LocalDate d) throws InputError{
+		try{	
+			for(int i=0;i<agenda.size();i++)
+				{
+					LocalDate data = agenda.get(i).getData();
+					if(data.isEqual(d)){
+						return i; //restituisco indice se ho trovato la data
+					}
+				}
+				return -1; //se non l'ho trovata, restituisco -1
+		   }catch(DateTimeParseException e)
+		   	{
+			   throw new InputError("Cerca per data InputError",e);
+		   	}
+		  }
+	public int cercaPerOrarioDisponibile(LocalTime ora) throws InputError{
+		try{
+				for(int i=0;i<agenda.size();i++)
+				{
+					// differenza in minuti da 00:00 + la durata
+					int delta_minuti = agenda.get(i).getOrario().get(ChronoField.MINUTE_OF_DAY) + agenda.get(i).getDurata();
+					// differenza in minuti per l'ora validare
+					int delta_minuti_input = ora.get(ChronoField.MINUTE_OF_DAY);
+					
+					if(delta_minuti <= delta_minuti_input){
+					return i; 
+					}
+				}
+				return -1; 
+			}catch(DateTimeException e)
+				{
+					throw new InputError("Cerca per orario InputError",e);
+				}
+		   }
 	
-	public boolean dettagliData(LocalDate d){
+	public boolean dettagliData(LocalDate d) throws InputError{
 		int trovato = cercaPerData(d);
 		
 		if(trovato != -1)
@@ -184,7 +196,7 @@ public class Agenda {
 			Appuntamento a = recuperaApp(trovato);
 			if(a != null)
 			{
-				a.stampaApp();
+				a.stampa();
 				return true;
 			}
 		}
@@ -193,12 +205,6 @@ public class Agenda {
 	
 	/*ordinamento per data, creo una copia dell'agenda
 	 * e lavoro su questa, per poi poterla stampare correttamente*/
-	public static boolean ordinaPerData(LocalDate d){
-		
-		ArrayList<Appuntamento> a = new ArrayList<Appuntamento>();
-
-		return true;
-	}
 	
 	public void ordina(){
 	    
@@ -239,7 +245,7 @@ public class Agenda {
 	   int numeratore = 1;
 	   while (iter.hasNext()){
 		   System.out.print("Appuntamento numero: "+ numeratore + "\n");
-		   iter.next().stampaApp();
+		   iter.next().stampa();
 		   numeratore++;
 	   }
    }
