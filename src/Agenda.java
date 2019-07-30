@@ -1,4 +1,7 @@
 import java.util.*;
+
+import eccezioni.InputError;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -94,15 +97,21 @@ public class Agenda {
 		return agenda.remove(i);
 	}
 
-	public boolean sostituisciApp(int i, Appuntamento nuovo){
+	public boolean sostituisciApp(int i, Appuntamento nuovo) throws InputError {
+		
+		assert nuovo != null;
 		
 		try {
 			agenda.remove(i);
 			agenda.add(i, nuovo);
+		} catch (ArrayIndexOutOfBoundsException e)
+		{
+			throw new InputError("errore, indice appuntamento inesistente", e);
+			
 		} catch (Exception e) {
 			System.out.print("Errore durante la modifica");
 			return false;
-		}
+		} 
 		
 		return true;
 	}
@@ -138,6 +147,8 @@ public class Agenda {
 	}
 	
 	public int cercaPerData(LocalDate d){
+		
+		assert d != null;
 		
 		for(int i=0;i<agenda.size();i++)
 		{

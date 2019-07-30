@@ -2,13 +2,14 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Iterator;
+
 import jbook.util.Input;
 import eccezioni.InputError;
 import eccezioni.SceltaSbagliata;
 
 
 /**
- * …………
  *
  * @author Buratto Gabriele 10025213
 */
@@ -73,7 +74,6 @@ public class MainClass {
 		}
 		catch (DateTimeException e){
 			throw new InputError("Data, ora o minuti sbagliati",e);
-			//System.out.println("Data, ora o minuti sbagliati.");
 		}
 		
 	return app;
@@ -131,14 +131,14 @@ public class MainClass {
 						LocalTime ora = appu.getOrario();
 						LocalDate data = appu.getData();
 						
-						// il giorno è disponibile non mi faccio problemi
+						// il giorno e' disponibile non mi faccio problemi
 						if( agenda.cercaPerData(data) == -1){
 							agenda.inserisciApp(appu);
-						// il giorno non è disponibile ma l'orario lo è		
+						// il giorno non e' disponibile ma l'orario lo e'		
 						}else if(agenda.cercaPerOrarioDisponibile(ora) != -1){
 							agenda.inserisciApp(appu);
 						}else {
-							System.out.print("Non è possibile inserire l'appuntamento in questa data\n");
+							System.out.print("Non e' possibile inserire l'appuntamento in questa data\n");
 						}
 					}catch(InputError e){
 						System.out.println(e.getMessage());
@@ -156,9 +156,14 @@ public class MainClass {
 						// la funzione richiede un indice dell'arraylist
 						agenda.sostituisciApp(numeroapp-1, nuovo);
 						agenda.stampaAgenda();
-					}catch (NumberFormatException e){
+					}
+					catch (NumberFormatException e){
 						System.out.println("Devi inserire solo numeri interi!");
-				     };
+				    }
+					catch (InputError e){
+						throw new InputError("Errore nella modifica dell'appuntamento", e);
+						
+					}
 
 				     break;
 				case 3: //ricerca appuntamento per data
@@ -171,8 +176,8 @@ public class MainClass {
 							System.out.println("Non ho trovato niente");
 						}
 					}catch (DateTimeParseException e){
-						System.out.println("Guarda che il formato della data non è corretto!");
-					};
+						System.out.println("Guarda che il formato della data non e' corretto!");
+					}
 					break;
 				case 4: //ricerca di appuntamento per nome
 					System.out.print("Inserisci il nome che vuoi cercare:");
@@ -196,7 +201,14 @@ public class MainClass {
 					agenda.stampaAgenda();
 					break;
 				case 7: //stampa tutti gli appuntamenti correnti
-					agenda.stampaAgenda();
+					/*Iterator<Appuntamento> iter = agenda.iterator(); //metodo restituente iteratore per uso cicli
+					int numeratore = 1;
+					while (iter.hasNext()){
+					   System.out.print("Appuntamento numero: "+ numeratore + "\n");
+					   iter.next().stampa();
+					   numeratore++;
+					}*/
+					//agenda.stampaAgenda();
 					break;
 				case 8: //scrivi su file
 					try {
