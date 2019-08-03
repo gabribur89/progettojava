@@ -1,7 +1,13 @@
 import static org.junit.Assert.*;
 
+import java.time.DateTimeException;
+import java.time.format.DateTimeParseException;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import jbook.util.*;
+import eccezioni.SceltaSbagliata;
 
 public class AppuntamentoTest {
 	
@@ -41,6 +47,24 @@ public class AppuntamentoTest {
 		app.setNome("pippo");
 		app.setOrario(10, 20);
 		app.stampa();
+	}
+	
+	@Test(expected = DateTimeParseException.class)
+	public void testDataSbagliata() throws DateTimeParseException {
+		//fail("Not yet implemented");
+		app.setData("201s", "12", "12");
+		assertNotNull(app.getData());
+		//app.setData("2011","aa","3s");
+		//assertEquals(0,app.getData());
+	}
+	
+	@Test(expected = DateTimeException.class)
+	public void testOrarioSbagliato() throws DateTimeException {
+		//fail("Not yet implemented");
+		app.setOrario(30,30);
+		assertNotNull(app.getOrario());
+		//app.setData("2011","aa","3s");
+		//assertEquals(0,app.getData());
 	}
 	
 	/*

@@ -216,7 +216,6 @@ public class MainClass {
 						System.out.println("Errore nel salvataggio degli Appuntamenti su file");
 					}
 					System.out.println("Appuntamenti Salvati correttamente");
-					
 					break;
 				case 9: //leggi da file
 					try {
