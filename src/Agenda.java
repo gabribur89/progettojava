@@ -14,13 +14,17 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 
-public class Agenda {
+public class Agenda implements Iterable<Appuntamento>{
 	
 	private ArrayList<Appuntamento> agenda = new ArrayList<Appuntamento>();
 	private File out = new File("salvato.csv");
 	
+	@Override
+    public Iterator<Appuntamento> iterator() {
+        return agenda.iterator();
+    }
+	
 	public boolean inserisciApp(Appuntamento nuovo){
-		
 		return agenda.add(nuovo);
 		
 	}
@@ -153,6 +157,7 @@ public class Agenda {
 		return false;
 	}
 	
+	
 	public int cercaPerData(LocalDate d) throws InputError{
 		try{	
 			for(int i=0;i<agenda.size();i++)
@@ -168,6 +173,8 @@ public class Agenda {
 			   throw new InputError("Cerca per data InputError",e);
 		   	}
 		  }
+	
+	
 	public int cercaPerOrarioDisponibile(LocalTime ora) throws InputError{
 		try{
 				for(int i=0;i<agenda.size();i++)
@@ -203,9 +210,14 @@ public class Agenda {
 		return false;
 	}
 	
+	public void stampa() {
+		for(Appuntamento a: this.agenda) {
+		    a.stampa();
+	    }
+	}
+
 	/*ordinamento per data, creo una copia dell'agenda
 	 * e lavoro su questa, per poi poterla stampare correttamente*/
-	
 	public void ordina(){
 	    
 		 //ArrayList<Appuntamento> a = new ArrayList<Appuntamento>(agenda);
@@ -232,25 +244,15 @@ public class Agenda {
 	     //return a;
 	}
 	
+	
    public void exchange(ArrayList<Appuntamento> a, int i, int j) 
      {
      Appuntamento tmp = a.get(i);
      a.set(i, a.get(j));
      a.set(j, tmp);
      }
+
    
-   public void stampaAgenda(){
-	   System.out.println("STAMPA AGENDA");
-	   Iterator<Appuntamento> iter = agenda.iterator(); //metodo restituente iteratore per uso cicli
-	   int numeratore = 1;
-	   while (iter.hasNext()){
-		   System.out.print("Appuntamento numero: "+ numeratore + "\n");
-		   iter.next().stampa();
-		   numeratore++;
-	   }
-   }
-	
-	
 	public int numEl(){
 		return agenda.size();
 	}
