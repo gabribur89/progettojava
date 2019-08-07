@@ -14,7 +14,19 @@ public class Appuntamento implements Evento{
 	private int durata;
 	private String nome;
 	private String luogo;
-	
+
+	public Appuntamento() {}
+
+	// crea un nuovo oggetto appuntamento da un altro appuntamento
+	public Appuntamento(Appuntamento app) {
+		data = app.data;
+		orario = app.orario;
+		durata = app.durata;
+		nome = app.nome;
+		luogo = app.luogo;
+		
+	}
+
 	public void setData(String gg, String mm, String aa){
 		
 		String data_completa = gg + "-" + mm + "-" + aa;

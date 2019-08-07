@@ -19,6 +19,12 @@ public class Agenda implements Iterable<Appuntamento>{
 	private ArrayList<Appuntamento> agenda = new ArrayList<Appuntamento>();
 	private File out = new File("salvato.csv");
 	
+	public Agenda() {}
+	
+	public Agenda(int dimensione) {
+		agenda = new ArrayList<Appuntamento>(dimensione);
+	}
+	
 	@Override
     public Iterator<Appuntamento> iterator() {
         return agenda.iterator();
@@ -69,7 +75,6 @@ public class Agenda implements Iterable<Appuntamento>{
 	}
 	
 	public void scrivisufile(){
-	
 		
 		try {
 	           FileWriter fw = new FileWriter(this.out,true);
@@ -195,6 +200,17 @@ public class Agenda implements Iterable<Appuntamento>{
 				}
 		   }
 	
+
+	public int size() {
+		return agenda.size();
+	}
+	
+	public Agenda clonaAgenda(Agenda ag) {
+	    Agenda clone = new Agenda(ag.size());
+	    for (Appuntamento item : ag) clone.inserisciApp(new Appuntamento(item));
+	    return clone;
+	}
+	
 	public boolean dettagliData(LocalDate d) throws InputError{
 		int trovato = cercaPerData(d);
 		
@@ -220,9 +236,6 @@ public class Agenda implements Iterable<Appuntamento>{
 	 * e lavoro su questa, per poi poterla stampare correttamente*/
 	public void ordina(){
 	    
-		 //ArrayList<Appuntamento> a = new ArrayList<Appuntamento>(agenda);
-		 //copia dell'agenda
-		 
 		 Appuntamento first;
 	     Appuntamento next;
 	     int i = agenda.size();
@@ -240,6 +253,7 @@ public class Agenda implements Iterable<Appuntamento>{
 	         }
 	       i--;
 	     }
+	     
 	     
 	     //return a;
 	}

@@ -180,8 +180,9 @@ public class MainClass {
 					}
 					break;
 				case 6: //ordinamento per data
-					agenda.ordina();
-					agenda.stampa();
+					Agenda tempag = agenda.clonaAgenda(agenda);
+					tempag.ordina();
+					tempag.stampa();
 					break;
 				case 7: //stampa tutti gli appuntamenti correnti
 					System.out.println("STAMPA AGENDA");
