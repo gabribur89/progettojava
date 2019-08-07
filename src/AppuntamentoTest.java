@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 import org.junit.Before;
@@ -22,16 +23,17 @@ public class AppuntamentoTest {
 	@Test
 	public void testSetData() {
 		//fail("Not yet implemented");
-		app.setData("1022", "02", "20");
-		assertNotNull(app.getData());
+		LocalDate datacorretta = LocalDate.parse("1999-02-20");
+		app.setData("1999", "02", "20");
+		assertEquals(datacorretta,app.getData());
 	}
 	
 	@Test
 	public void testGetData() {
 		app.setData("1022", "02", "20");
-		System.out.println("data getData: "+app.getData());
+		assertNotNull(app.getData());
 	}
-
+	
 	@Test
 	public void testSetOrario() {
 		//fail("Not yet implemented");
@@ -53,7 +55,7 @@ public class AppuntamentoTest {
 	public void testDataSbagliata() throws DateTimeParseException {
 		//fail("Not yet implemented");
 		app.setData("201s", "12", "12");
-		assertNotNull(app.getData());
+		//app.getData();
 		//app.setData("2011","aa","3s");
 		//assertEquals(0,app.getData());
 	}
@@ -62,7 +64,16 @@ public class AppuntamentoTest {
 	public void testOrarioSbagliato() throws DateTimeException {
 		//fail("Not yet implemented");
 		app.setOrario(30,30);
-		assertNotNull(app.getOrario());
+		//assertNotNull(app.getOrario());
+		//app.setData("2011","aa","3s");
+		//assertEquals(0,app.getData());
+	}
+	
+	@Test(expected = NumberFormatException.class)
+	public void testDurataSbagliata() throws NumberFormatException {
+		//fail("Not yet implemented");
+		app.setDurata(Integer.parseInt("asd"));
+		//assertNotNull(app.getOrario());
 		//app.setData("2011","aa","3s");
 		//assertEquals(0,app.getData());
 	}
