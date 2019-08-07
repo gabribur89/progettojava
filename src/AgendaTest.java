@@ -168,15 +168,15 @@ public class AgendaTest {
 	public void testordinamento(){
 		Agenda ag = new Agenda();
 		this.inserisciAppuntamenti(ag);
-		ag.stampaAgenda();
+		for(Appuntamento a: ag) {
+			a.stampa();
+		}
+		
 		System.out.print("ordino...\n\n");
 		ag.ordina();
-		ag.stampaAgenda();
-		//ag.eliminaApp(0);
-		//ag.eliminaApp(0);
-		//ag.eliminaApp(0);
-		//ag.eliminaApp(1);
-		//ag.eliminaApp(2);
+		for(Appuntamento a: ag) {
+			a.stampa();
+		}
 		
 	}
 	
@@ -196,4 +196,15 @@ public class AgendaTest {
 		assertTrue(ag.numEl()==3);
 		
 	}
+	
+	@Test
+	public void testagendaiterabile() {
+		Agenda ag = new Agenda();
+		this.inserisciAppuntamenti(ag);
+		
+		for(Appuntamento a : ag) {
+			a.stampa();
+		}
+	}
+	
 }

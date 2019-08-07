@@ -83,26 +83,11 @@ public class MainClass {
 	public static void main(String[] args) throws SceltaSbagliata, InputError{
 			
 			int scelta = 0;
+			
 			// determina se è già stato prodotto il menu o no
 			boolean esistente = false;
 			Agenda agenda = new Agenda();
-			/*
-			Appuntamento a = new Appuntamento();
-			a.setNome("pippo");
-			a.setData("1999", "02", "01");
-			a.setDurata(45);
-			a.setLuogo("milano");
-			a.setOrario(13, 30);
-			Appuntamento b = new Appuntamento();
-			b.setNome("caio");
-			b.setData("1990", "12", "22");
-			b.setDurata(45);
-			b.setLuogo("milano");
-			b.setOrario(13, 30);
-			
-			agenda.inserisciApp(a);
-			agenda.inserisciApp(b);
-			*/
+
 			do{
 				MainClass.stampaMenu(esistente);
 				esistente = true; 
@@ -116,12 +101,11 @@ public class MainClass {
 					}
 					
 				} catch (NumberFormatException e){
-						System.out.print("Devi inserire solo numeri interi!");
-				  }
-				  catch(SceltaSbagliata e){
+					  System.out.print("Devi inserire solo numeri interi!");
+				} catch(SceltaSbagliata e){
 					  scelta = 99;
 					  System.out.println("Devi inserire un numero tra 0 e 9!");
-				  };
+				};
 				
 				switch(scelta){
 				case 1: //aggiungi appuntamento
@@ -143,18 +127,18 @@ public class MainClass {
 					}catch(InputError e){
 						System.out.println(e.getMessage());
 						break;
-						//System.out.println("Errore nell'inserimento di appuntamento");
 					}
 					break;
 				case 2: //modifica appuntamento
 					try{
-						agenda.stampaAgenda();
+						agenda.stampa();
 						System.out.print("Scegli l'appuntamento da modificare:");
+						
 						int numeroapp = Input.readInt();
 						Appuntamento nuovo = nuovoApp();
 						// la funzione richiede un indice dell'arraylist
 						agenda.sostituisciApp(numeroapp-1, nuovo);
-						agenda.stampaAgenda();
+						agenda.stampa();
 					}
 					catch (NumberFormatException e){
 						System.out.println("Devi inserire solo numeri interi!");
@@ -175,7 +159,7 @@ public class MainClass {
 							System.out.println("Non ho trovato niente");
 						}
 					}catch (DateTimeParseException e){
-						System.out.println("Guarda che il formato della data non � corretto!");
+						System.out.println("Guarda che il formato della data non � corretto!");
 					}
 					break;
 				case 4: //ricerca di appuntamento per nome
@@ -197,17 +181,11 @@ public class MainClass {
 					break;
 				case 6: //ordinamento per data
 					agenda.ordina();
-					agenda.stampaAgenda();
+					agenda.stampa();
 					break;
 				case 7: //stampa tutti gli appuntamenti correnti
-					/*Iterator<Appuntamento> iter = agenda.iterator(); //metodo restituente iteratore per uso cicli
-					int numeratore = 1;
-					while (iter.hasNext()){
-					   System.out.print("Appuntamento numero: "+ numeratore + "\n");
-					   iter.next().stampa();
-					   numeratore++;
-					}*/
-					//agenda.stampaAgenda();
+					System.out.println("STAMPA AGENDA");
+  				    agenda.stampa();
 					break;
 				case 8: //scrivi su file
 					try {
